@@ -1,11 +1,11 @@
 const AWS = require('aws-sdk');
 const fs = require('fs');
 
-// Initialize AWS SDK with your credentials
+// Initialize AWS SDK with credentials
 AWS.config.update({
-  accessKeyId: 'YOUR_ACCESS_KEY_ID',
-  secretAccessKey: 'YOUR_SECRET_ACCESS_KEY',
-  region: 'YOUR_AWS_REGION'
+  accessKeyId: 'xxxx',//ACCESS_KEY_ID
+  secretAccessKey: 'xxxx',//SECRET_ACCESS_KEYS
+  region: 'xxxx'//AWS_REGION
 });
 
 const s3 = new AWS.S3();
@@ -16,7 +16,7 @@ const sqs = new AWS.SQS();
 exports.uploadImage = (req, res) => {
   const file = req.file;
   const params = {
-    Bucket: 'YOUR_S3_BUCKET_NAME',
+    Bucket: 'xxx',///S3_BUCKET_NAME
     Key: file.originalname,
     Body: fs.createReadStream(file.path)
   };
@@ -31,7 +31,7 @@ exports.uploadImage = (req, res) => {
     const message = { bucket: params.Bucket, key: params.Key };
     const params = {
       MessageBody: JSON.stringify(message),
-      QueueUrl: 'YOUR_SQS_QUEUE_URL'
+      QueueUrl: 'xxx'//SQS_QUEUE_URL
     };
     
     sqs.sendMessage(params, (err, data) => {
@@ -48,10 +48,10 @@ exports.uploadImage = (req, res) => {
 exports.processImage = (req, res) => {
   const message = req.body;
   
-  // Trigger Lambda function for image processing using SNS
+  // Triggers Lambda function for image processing using SNS
   const params = {
     Message: JSON.stringify(message),
-    TopicArn: 'YOUR_SNS_TOPIC_ARN'
+    TopicArn: 'xxx' //SNS_TOPIC_ARN
   };
   
   sns.publish(params, (err, data) => {
